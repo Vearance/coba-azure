@@ -20,21 +20,18 @@ def predict():
         for feature in features:
             data[feature] = float(request.form.get(feature, 0))
 
-        rf_model = load('rf_model.joblib')
         xgb_model = load('xgb_model.joblib')
         lgbm_model = load('lgbm_model.joblib')
 
         data_for_prediction = [data[feature] for feature in features]
 
-        rf_prediction = rf_model.predict([data_for_prediction])
         xgb_prediction = xgb_model.predict([data_for_prediction])
         lgbm_prediction = lgbm_model.predict([data_for_prediction])
 
-        weight_rf = 0.5
-        weight_xgb = 0.2
-        weight_nn = 0.3
+        weight_xgb = 0.5
+        weight_nn = 0.5
 
-        ensemble_prediction = (weight_rf * rf_prediction) + (weight_xgb * xgb_prediction) + (weight_nn * lgbm_prediction)
+        ensemble_prediction = (weight_xgb * xgb_prediction) + (weight_nn * lgbm_prediction)
 
         functioning_day = 'Functioning Day' in request.form
         print("Functioning Day:", functioning_day)
